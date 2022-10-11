@@ -9,13 +9,23 @@
         private static RomanValue Hundred = new RomanValue(100, "C");
         private static RomanValue FiveHundred = new RomanValue(500, "D");
         private static RomanValue Thousand = new RomanValue(1000, "M");
+        private static RomanValue ThousandHat = new RomanValue(1000, "I̅");
+        private static RomanValue FiveThousand = new RomanValue(5000, "V̅");
+        private static RomanValue TenThousand = new RomanValue(10000, "X̅");
 
-        private static readonly RomanValue[] NumerableArray = new RomanValue[7] { Thousand, FiveHundred, Hundred, Fifty, Ten, Five, One };
-        private static readonly RomanValue[,] FourPairs = new RomanValue[,] { { Hundred, FiveHundred }, { Ten, Fifty }, { One, Five }  };
-        private static readonly RomanValue[,] NinePairs = new RomanValue[,] { { Hundred, Thousand }, { Ten, Hundred }, { One, Ten } };
+        private static readonly RomanValue[] NumerableArray = new RomanValue[9] { TenThousand, FiveThousand, Thousand, FiveHundred, Hundred, Fifty, Ten, Five, One };
+        private static readonly RomanValue[,] FourPairs = new RomanValue[,] { { Thousand, FiveThousand }, { Hundred, FiveHundred }, { Ten, Fifty }, { One, Five }  };
+
+        private static readonly RomanValue[,] NinePairs = new RomanValue[,] { { Thousand, TenThousand }, { Hundred, Thousand }, { Ten, Hundred }, { One, Ten } };
+
+        private bool AboveFourK = false;
 
         public string ConvertNumberToRoman(int val)
         {
+            AboveFourK = false;
+            if (val >= 4000)
+                AboveFourK = true;
+
             var completeSymbol = "";
             while (val > 0)
             {
@@ -80,32 +90,62 @@
                 if (!skip)
                 {
                     var count = val / NumerableArray[x].Value;
-                    var noLimit = false;
-                    if (val > 4000)
+                    if (AboveFourK)
                     {
-                        noLimit = true;
-                    }
+                        var digitString = val.ToString().First().ToString();
+                        var digit = int.Parse(digitString);
 
-                    if (count > 0 && ((count <= 3 && !noLimit) || noLimit))
-                    {
-                        returnString = returnString + MultipleSymbols(count, NumerableArray[x].Symbol);
-                        val -= count * NumerableArray[x].Value;
-                        var lastVal = val.ToString().Last();
-                        var lastValDigit = lastVal.ToString();
-                        if (int.Parse(lastValDigit) == 9)
+                        switch (digit)
                         {
-                            skip = true;
+                            default:
+                                if (count > 0 && count <= 3)
+                                {
+                                    returnString = returnString + MultipleSymbols(count, NumerableArray[x].Symbol);
+                                    val -= count * NumerableArray[x].Value;
+                                    var lastVal = val.ToString().Last();
+                                    var lastValDigit = lastVal.ToString();
+                                    if (int.Parse(lastValDigit) == 9)
+                                    {
+                                        skip = true;
+                                    }
+                                }
+                                break;
+                            case 4:
+                                val -= FiveThousand.Value - ThousandHat.Value;
+                                returnString = ThousandHat.Symbol + FiveThousand.Symbol;
+                                break;
+                            case 9:
+                                val -= TenThousand.Value - ThousandHat.Value;
+                                returnString = ThousandHat.Symbol + TenThousand.Symbol;
+                                break;
                         }
                     }
+                    else{
+                        if (count > 0 && count <= 3)
+                        {                            
+                            returnString = returnString + MultipleSymbols(count, NumerableArray[x].Symbol);
+                            val -= count * NumerableArray[x].Value;
+                            var lastVal = val.ToString().Last();
+                            var lastValDigit = lastVal.ToString();
+                            if (int.Parse(lastValDigit) == 9)
+                            {
+                                skip = true;
+                            }
+                        }
+                    }
+
+                   
                 }
             }
             return (returnString, val);
         }
-
         private string MultipleSymbols(int extra, string symbol)
         {
+            if(AboveFourK && Thousand.Symbol == symbol) 
+                symbol = ThousandHat.Symbol;
+
             var result = "";
-            for(var i = 0; i < extra; i++)
+            for (var i = 0; i < extra; i++)
             {
                 result += symbol;
             }

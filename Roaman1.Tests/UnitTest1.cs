@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using FluentAssert;
 using Roman1;
 
@@ -16,6 +16,8 @@ namespace Roaman1.Tests
         [TestCase(100, "C")]
         [TestCase(500, "D")]
         [TestCase(1000, "M")]
+        [TestCase(5000, "V̅")]
+        [TestCase(10000, "X̅")]
 
         public void SingleSymbol(int val, string expected)
         {
@@ -35,7 +37,10 @@ namespace Roaman1.Tests
         [TestCase(388, "CCCLXXXVIII")]
         [TestCase(600, "DC")]
         [TestCase(2022, "MMXXII")]
-        [TestCase(4321, "MMMMCCCXXI")]
+        [TestCase(4321, "I̅V̅CCCXXI")]
+        [TestCase(9521, "I̅X̅DXXI")]
+        [TestCase(18521, "X̅V̅I̅I̅I̅DXXI")]
+        [TestCase(20000, "X̅X̅")]
 
         public void MultiSymbol(int val, string expected)
         {
@@ -59,7 +64,9 @@ namespace Roaman1.Tests
         [TestCase(359, "CCCLIX")]
         [TestCase(400, "CD")]
         [TestCase(900, "CM")]
-        [TestCase(12345, "MMMMMMMMMMMMCCCXLV")]
+        [TestCase(4000, "I̅V̅")]
+        [TestCase(9000, "I̅X̅")]
+
         public void PrevNumbers(int val, string expected)
         {
             var result = _romanNumbers.ConvertNumberToRoman(val);
