@@ -108,6 +108,10 @@
                                     {
                                         skip = true;
                                     }
+                                    if (val > 4000)
+                                        AboveFourK = true;
+                                    else
+                                        AboveFourK = false;
                                 }
                                 break;
                             case 4:

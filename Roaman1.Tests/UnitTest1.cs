@@ -22,7 +22,6 @@ namespace Roaman1.Tests
         public void SingleSymbol(int val, string expected)
         {
             var result = _romanNumbers.ConvertNumberToRoman(val);
-            //Assert.That(result, Is.EqualTo(expected));
             result.ShouldBeEqualTo(expected);
         }
 
@@ -37,15 +36,10 @@ namespace Roaman1.Tests
         [TestCase(388, "CCCLXXXVIII")]
         [TestCase(600, "DC")]
         [TestCase(2022, "MMXXII")]
-        [TestCase(4321, "I̅V̅CCCXXI")]
-        [TestCase(9521, "I̅X̅DXXI")]
-        [TestCase(18521, "X̅V̅I̅I̅I̅DXXI")]
-        [TestCase(20000, "X̅X̅")]
 
         public void MultiSymbol(int val, string expected)
         {
             var result = _romanNumbers.ConvertNumberToRoman(val);
-            //Assert.That(result, Is.EqualTo(expected));
             result.ShouldBeEqualTo(expected);
         }
 
@@ -63,14 +57,26 @@ namespace Roaman1.Tests
         [TestCase(399, "CCCXCIX")]
         [TestCase(359, "CCCLIX")]
         [TestCase(400, "CD")]
+        [TestCase(444, "CDXLIV")]
         [TestCase(900, "CM")]
-        [TestCase(4000, "I̅V̅")]
-        [TestCase(9000, "I̅X̅")]
 
         public void PrevNumbers(int val, string expected)
         {
             var result = _romanNumbers.ConvertNumberToRoman(val);
-            //Assert.That(result, Is.EqualTo(expected));
+            result.ShouldBeEqualTo(expected);
+        }
+
+        [TestCase(4000, "I̅V̅")]
+        [TestCase(4321, "I̅V̅CCCXXI")]
+        [TestCase(6725, "V̅I̅DCCXXV")]
+        [TestCase(9000, "I̅X̅")]
+        [TestCase(9521, "I̅X̅DXXI")]
+        [TestCase(10444, "X̅CDXLIV")]
+        [TestCase(18521, "X̅V̅I̅I̅I̅DXXI")]
+        [TestCase(20000, "X̅X̅")]
+        public void AboveFourK(int val, string expected)
+        {
+            var result = _romanNumbers.ConvertNumberToRoman(val);
             result.ShouldBeEqualTo(expected);
         }
     }
