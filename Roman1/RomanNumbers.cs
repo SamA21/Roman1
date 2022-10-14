@@ -14,17 +14,17 @@
         private static RomanValue TenThousand = new RomanValue(10000, "X̅");
 
         private static readonly RomanValue[] NumerableArray = new RomanValue[9] { TenThousand, FiveThousand, Thousand, FiveHundred, Hundred, Fifty, Ten, Five, One };
-        private static readonly RomanValue[,] FourPairs = new RomanValue[,] { { Thousand, FiveThousand }, { Hundred, FiveHundred }, { Ten, Fifty }, { One, Five }  };
+        private static readonly RomanValue[,] FourPairs = new RomanValue[,] { { ThousandHat, FiveThousand }, { Hundred, FiveHundred }, { Ten, Fifty }, { One, Five }  };
 
-        private static readonly RomanValue[,] NinePairs = new RomanValue[,] { { Thousand, TenThousand }, { Hundred, Thousand }, { Ten, Hundred }, { One, Ten } };
+        private static readonly RomanValue[,] NinePairs = new RomanValue[,] { { ThousandHat, TenThousand }, { Hundred, Thousand }, { Ten, Hundred }, { One, Ten } };
 
-        private bool AboveFourK = false;
+        private bool InitallyAbove4k = false;
 
         public string ConvertNumberToRoman(int val)
         {
-            AboveFourK = false;
+            InitallyAbove4k = false;
             if (val >= 4000)
-                AboveFourK = true;
+                InitallyAbove4k = true;
 
             var completeSymbol = "";
             while (val > 0)
@@ -58,7 +58,7 @@
         {
             var returnString = "";
             var val = currentVal;
-            if (val > 1000)
+            if (val > 10000)
             {
                 return StandardLoop(val);
             }
@@ -90,7 +90,7 @@
                 if (!skip)
                 {
                     var count = val / NumerableArray[x].Value;
-                    if (AboveFourK)
+                    if (InitallyAbove4k)
                     {
                         var digitString = val.ToString().First().ToString();
                         var digit = int.Parse(digitString);
@@ -108,19 +108,17 @@
                                     {
                                         skip = true;
                                     }
-                                    if (val > 4000)
-                                        AboveFourK = true;
-                                    else
-                                        AboveFourK = false;
                                 }
                                 break;
                             case 4:
-                                val -= FiveThousand.Value - ThousandHat.Value;
-                                returnString = ThousandHat.Symbol + FiveThousand.Symbol;
+                                var loopValues4 = FourNineLoop(val, FourPairs);
+                                returnString += loopValues4.Item1;
+                                val = loopValues4.Item2;
                                 break;
                             case 9:
-                                val -= TenThousand.Value - ThousandHat.Value;
-                                returnString = ThousandHat.Symbol + TenThousand.Symbol;
+                                var loopValues9 = FourNineLoop(val, NinePairs);
+                                returnString += loopValues9.Item1;
+                                val = loopValues9.Item2;
                                 break;
                         }
                     }
@@ -145,7 +143,7 @@
         }
         private string MultipleSymbols(int extra, string symbol)
         {
-            if(AboveFourK && Thousand.Symbol == symbol) 
+            if(InitallyAbove4k && Thousand.Symbol == symbol) 
                 symbol = ThousandHat.Symbol;
 
             var result = "";

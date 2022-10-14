@@ -71,10 +71,18 @@ namespace Roaman1.Tests
         [TestCase(6725, "V̅I̅DCCXXV")]
         [TestCase(9000, "I̅X̅")]
         [TestCase(9521, "I̅X̅DXXI")]
+        public void AboveFourK(int val, string expected)
+        {
+            var result = _romanNumbers.ConvertNumberToRoman(val);
+            result.ShouldBeEqualTo(expected);
+        }
+
         [TestCase(10444, "X̅CDXLIV")]
+        [TestCase(10999, "X̅CMXCIX")]
         [TestCase(18521, "X̅V̅I̅I̅I̅DXXI")]
         [TestCase(20000, "X̅X̅")]
-        public void AboveFourK(int val, string expected)
+        [TestCase(30999, "X̅X̅X̅CMXCIX")]
+        public void AboveTenK(int val, string expected)
         {
             var result = _romanNumbers.ConvertNumberToRoman(val);
             result.ShouldBeEqualTo(expected);
