@@ -4,7 +4,7 @@ using Roman1;
 
 namespace Roaman1.Tests
 {
-    public class Tests
+    public class ConvertNumberToRomanTests
     {
         private RomanNumbers _romanNumbers = new RomanNumbers();
 

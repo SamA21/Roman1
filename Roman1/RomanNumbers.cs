@@ -1,6 +1,6 @@
 ﻿namespace Roman1
 {
-    public class RomanNumbers
+    public sealed class RomanNumbers
     {
         private static RomanValue One = new RomanValue(1, "I");
         private static RomanValue Five = new RomanValue(5, "V");
@@ -19,6 +19,61 @@
         private static readonly RomanValue[,] NinePairs = new RomanValue[,] { { ThousandHat, TenThousand }, { Hundred, Thousand }, { Ten, Hundred }, { One, Ten } };
 
         private bool InitallyAbove4k = false;
+
+        public RomanValue AddRomanValue(RomanValue number1, RomanValue number2)
+        {
+            int newInt = number1.Value + number2.Value;
+            if (newInt < 40000)
+            {
+                var romanString = ConvertNumberToRoman(newInt);
+                return new RomanValue(newInt, romanString);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("Added numbers are unsupported");
+            }
+        }
+
+        public string AddRomanValue(string numerable1, string numerable2)
+        {
+            int number1 = ConvertRomanToNumber(numerable1);
+            int number2 = ConvertRomanToNumber(numerable2);
+            int newInt = number1 + number2;
+            if (newInt < 40000)
+            {
+                return ConvertNumberToRoman(newInt);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("Added numbers are unsupported");
+            }
+        }
+
+        public int ConvertRomanToNumber(string numerable)
+        {
+            int value = 0;
+            foreach(var letter in numerable)
+            {
+                foreach (var roman in NumerableArray)
+                {
+                    if (letter.ToString() == roman.Symbol)
+                        value += roman.Value;                 
+                }               
+            }
+            if (numerable.Contains("IV") || numerable.Contains("IX"))
+                value -= 2;
+
+            if (numerable.Contains("XL") || numerable.Contains("XC"))
+                value -= 20;
+
+            if (numerable.Contains("CD") || numerable.Contains("CM"))
+                value -= 200;
+
+            if (numerable.Contains("I̅V̅") || numerable.Contains("I̅X̅"))
+                value -= 2000;
+
+            return value;
+        }
 
         public string ConvertNumberToRoman(int val)
         {

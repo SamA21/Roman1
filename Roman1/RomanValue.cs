@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Roman1
 {
-    public record RomanValue(int Value, string Symbol);
+    public sealed record RomanValue(int Value, string Symbol);
 }
