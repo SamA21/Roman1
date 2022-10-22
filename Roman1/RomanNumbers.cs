@@ -51,15 +51,38 @@
 
         public int ConvertRomanToNumber(string numerable)
         {
-            int value = 0;
-            foreach(var letter in numerable)
+            int value = 0;           
+            for(var x = 0; x < numerable.Length; x++)
             {
                 foreach (var roman in NumerableArray)
                 {
-                    if (letter.ToString() == roman.Symbol)
+                    try
+                    {
+                        if (numerable[x+1] == '̅')
+                        {
+                            int? hatVal = NumerableArray.FirstOrDefault(y => y.Symbol == numerable[x].ToString() + numerable[x+1].ToString())?.Value;
+                            if (hatVal.HasValue)
+                            {
+                                value += hatVal.Value;
+                                break;
+                            }
+                            else if (ThousandHat.Symbol == numerable[x].ToString() + numerable[x + 1].ToString())
+                            {
+                                value += ThousandHat.Value;
+                                break;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        //fail silent as if not hat or too long it shouldn't matter
+                    }
+
+                    if (numerable[x].ToString() == roman.Symbol)
                         value += roman.Value;                 
                 }               
             }
+
             if (numerable.Contains("IV") || numerable.Contains("IX"))
                 value -= 2;
 
