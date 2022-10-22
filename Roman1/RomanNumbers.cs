@@ -20,32 +20,74 @@
 
         private bool InitallyAbove4k = false;
 
+
         public RomanValue AddRomanValue(RomanValue number1, RomanValue number2)
         {
             int newInt = number1.Value + number2.Value;
-            if (newInt < 40000)
+            if (NumberInLimit(newInt))
             {
                 var romanString = ConvertNumberToRoman(newInt);
                 return new RomanValue(newInt, romanString);
             }
             else
             {
-                throw new ArgumentOutOfRangeException("Added numbers are unsupported");
+                throw new ArgumentOutOfRangeException("The total of the added numbers are unsupported");
             }
-        }
-
+        }      
+        
         public string AddRomanValue(string numerable1, string numerable2)
         {
             int number1 = ConvertRomanToNumber(numerable1);
             int number2 = ConvertRomanToNumber(numerable2);
             int newInt = number1 + number2;
-            if (newInt < 40000)
+            if (NumberInLimit(newInt))
             {
                 return ConvertNumberToRoman(newInt);
             }
             else
             {
-                throw new ArgumentOutOfRangeException("Added numbers are unsupported");
+                throw new ArgumentOutOfRangeException("The total of the subtracted numbers are unsupported");
+            }
+        }
+
+        public RomanValue SubtractRomanValue(RomanValue number1, RomanValue number2)
+        {
+            int newInt = number1.Value - number2.Value;
+            if (NumberInLimit(newInt))
+            {
+                var romanString = ConvertNumberToRoman(newInt);
+                return new RomanValue(newInt, romanString);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("The total of the subtracted numbers are unsupported");
+            }
+        }
+
+        public string SubtractRomanValue(string numerable1, string numerable2)
+        {
+            int number1 = ConvertRomanToNumber(numerable1);
+            int number2 = ConvertRomanToNumber(numerable2);
+            int newInt = number1 - number2;
+            if (NumberInLimit(newInt))
+            {
+                return ConvertNumberToRoman(newInt);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("The total of the subtracted numbers are unsupported");
+            }
+        }
+
+        private bool NumberInLimit(int val)
+        {
+            if (val > 0 && val < 40000)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
