@@ -75,7 +75,7 @@
                     }
                     catch (Exception ex)
                     {
-                        //fail silent as if not hat or too long it shouldn't matter
+                        //fail silent as if too long it shouldn't matter
                     }
 
                     if (numerable[x].ToString() == roman.Symbol)
