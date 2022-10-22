@@ -14,12 +14,11 @@
         private static RomanValue TenThousand = new RomanValue(10000, "X̅");
 
         private static readonly RomanValue[] NumerableArray = new RomanValue[9] { TenThousand, FiveThousand, Thousand, FiveHundred, Hundred, Fifty, Ten, Five, One };
-        private static readonly RomanValue[,] FourPairs = new RomanValue[,] { { ThousandHat, FiveThousand }, { Hundred, FiveHundred }, { Ten, Fifty }, { One, Five }  };
+        private static readonly RomanValue[,] FourPairs = new RomanValue[,] { { ThousandHat, FiveThousand }, { Hundred, FiveHundred }, { Ten, Fifty }, { One, Five } };
 
         private static readonly RomanValue[,] NinePairs = new RomanValue[,] { { ThousandHat, TenThousand }, { Hundred, Thousand }, { Ten, Hundred }, { One, Ten } };
 
         private bool InitallyAbove4k = false;
-
 
         public RomanValue AddRomanValue(RomanValue number1, RomanValue number2)
         {
@@ -33,8 +32,8 @@
             {
                 throw new ArgumentOutOfRangeException("The total of the added numbers are unsupported");
             }
-        }      
-        
+        }
+
         public string AddRomanValue(string numerable1, string numerable2)
         {
             int number1 = ConvertRomanToNumber(numerable1);
@@ -79,16 +78,16 @@
             }
         }
 
-        private bool NumberInLimit(int val)
+        public RomanValue ConvertToRomanValue(int val)
         {
-            if (val > 0 && val < 40000)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            string symbol = ConvertNumberToRoman(val);
+            return new RomanValue(val, symbol);
+        }
+
+        public RomanValue ConvertToRomanValue(string symbol)
+        {
+            int val = ConvertRomanToNumber(symbol);
+            return new RomanValue(val, symbol);
         }
 
         public int ConvertRomanToNumber(string numerable)
@@ -139,7 +138,7 @@
 
             return value;
         }
-
+                
         public string ConvertNumberToRoman(int val)
         {
             InitallyAbove4k = false;
@@ -174,6 +173,18 @@
             return completeSymbol;
         }
         
+        private bool NumberInLimit(int val)
+        {
+            if (val > 0 && val < 40000)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private (string, int) FourNineLoop(int currentVal, RomanValue[,] pairs)
         {
             var returnString = "";
